@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
       const videoGeometry = new THREE.PlaneGeometry(1, 2160/3840);
       const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
-      videoPlane.position.set(x, y, 0.1);
+      videoPlane.position.set(x, y, -0.1);
       videoPlane.scale.set(scale, scale, scale);
       videoPlane.visible = false; // Initially hidden
       return videoPlane;
