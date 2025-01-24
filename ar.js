@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const hotspotPlane = new THREE.Mesh(hotspotGeometry, hotspotMaterial);
       hotspotPlane.position.set(x, y, 0);
       hotspotPlane.scale.set(scale, scale, scale);
-      hotspotPlane.visible = True; // Planes are visible for testing
+      hotspotPlane.visible = true; // Planes are visible for testing
       return hotspotPlane;
     }
     
