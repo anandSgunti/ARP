@@ -71,14 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
       const videoGeometry = new THREE.PlaneGeometry(1, 2160/3840);
       const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
-      videoPlane.position.set(x, y, -0.1);
+      videoPlane.position.set(x, y, 0.05);
       videoPlane.scale.set(scale, scale, scale);
       videoPlane.visible = false; // Initially hidden
       return videoPlane;
     }
 
     const headVideoPlane = createVideoPlane(headTexture, 0.82, 0.62 ); // Video appears to the right of the hotspot
-    const handVideoPlane = createVideoPlane(handTexture, -0.5, 0.3); // Video appears to the left of the hotspot
+    const handVideoPlane = createVideoPlane(handTexture, -0.5, 0.2); // Video appears to the left of the hotspot
     const footVideoPlane = createVideoPlane(footTexture,1.2, -0.5); // Video appears to the right of the hotspot
 
     // Assign video references for interaction
