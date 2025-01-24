@@ -52,11 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Create Hotspot Planes (Initially Hidden)
     function createHotspotPlane(x, y, scale = 2) {
       const hotspotGeometry = new THREE.PlaneGeometry(0.3, 0.2);
-      const hotspotMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+      const hotspotMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
       const hotspotPlane = new THREE.Mesh(hotspotGeometry, hotspotMaterial);
-      hotspotPlane.position.set(x, y, 0.1);
+      hotspotPlane.position.set(x, y, 0);
       hotspotPlane.scale.set(scale, scale, scale);
-      hotspotPlane.visible = false; // Planes are visible for testing
+      hotspotPlane.visible = True; // Planes are visible for testing
       return hotspotPlane;
     }
     
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
       const videoGeometry = new THREE.PlaneGeometry(1, 2160/3840);
       const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
-      videoPlane.position.set(x, y, -0.5);
+      videoPlane.position.set(x, y, 0);
       videoPlane.scale.set(scale, scale, scale);
       videoPlane.visible = false; // Initially hidden
       return videoPlane;
