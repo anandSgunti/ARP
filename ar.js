@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const headVideoPlane = createVideoPlane(headTexture,  0.82, 0.62);
-    const handVideoPlane = createVideoPlane(handTexture, -0.5, 0.2);
-    const footVideoPlane = createVideoPlane(footTexture, 1.2, -0.5);
+    const handVideoPlane = createVideoPlane(handTexture, -0.3, 0.2);
+    const footVideoPlane = createVideoPlane(footTexture, 0.9, -0.45);
 
     // Create Hotspot Planes (Click Detection Only)
     function createHotspotPlane(x, y, scale = 2) {
