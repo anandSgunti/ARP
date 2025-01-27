@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     parentGroup.add(personPlane);
 
     // Create Video Planes (Keeping Videos at Given Places)
-    function createVideoPlane(videoTexture, x, y, scale = 1) {
+    function createVideoPlane(videoTexture, x, y, scale = 1.5) {
       const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
       const videoGeometry = new THREE.PlaneGeometry(1, 2160 / 3840);
       const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
