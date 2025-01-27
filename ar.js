@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const personMaterial = new THREE.MeshBasicMaterial({ map: personTexture, transparent: true });
 
     // Load Videos
-    const headVideo = await loadVideo("assets/videos/Head.mp4");
-    const handVideo = await loadVideo("assets/videos/hand.mp4");
+    const headVideo = await loadVideo("assets/videos/A_head.mp4");
+    const handVideo = await loadVideo("assets/videos/A_hand.mp4");
     const footVideo = await loadVideo("assets/videos/A_foot.mp4");
 
     headVideo.muted = false;
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     parentGroup.add(personPlane);
 
     // Create Video Planes (Keeping Videos at Given Places)
-    function createVideoPlane(videoTexture, x, y, scale = 1.5) {
+    function createVideoPlane(videoTexture, x, y, scale = 1) {
       const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
       const videoGeometry = new THREE.PlaneGeometry(1, 2160 / 3840);
       const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
