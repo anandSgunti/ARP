@@ -6,12 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const start = async () => {
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
       container: document.body,
-      imageTargetSrc: "assets/targets/QR.mind", // Tracking image
+      imageTargetSrc: "./assets/targets/QR.mind", // Tracking image
     });
     const { renderer, scene, camera } = mindarThree;
 
-    // const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-    // scene.add(light);
+    // Create a Parent Group to Keep Objects Aligned
+    const parentGroup = new THREE.Group();
+    parentGroup.position.set(0, 0, 0);
+    parentGroup.scale.set(1, 1, 1);
 
     // Load Person Texture (Background Image)
     const personTexture = new THREE.TextureLoader().load("./assets/videos/Person_1.png");
@@ -39,24 +41,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const handTexture = new THREE.VideoTexture(handVideo);
     const footTexture = new THREE.VideoTexture(footVideo);
 
-    // Create Person Plane (Main Background)
+    // Create Single Plane for Image
     const personGeometry = new THREE.PlaneGeometry(2, 3);
     const personPlane = new THREE.Mesh(personGeometry, personMaterial);
-    personPlane.position.set(0, 0, 0);
     personPlane.scale.set(0.7, 0.7, 0.7);
+    personPlane.position.set(0, 0, 0);
+    personPlane.renderOrder = 1;
+    parentGroup.add(personPlane);
 
-    // Create Hotspot Icons (Clickable)
-    const hotspotTexture = new THREE.TextureLoader().load("assets/videos/hotspot.png");
-    const hotspotMaterial = new THREE.SpriteMaterial({ map: hotspotTexture, transparent: true });
+    // Create Video Planes (Keeping Videos at Given Places)
+    function createVideoPlane(videoTexture, x, y, scale = 1) {
+      const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
+      const videoGeometry = new THREE.PlaneGeometry(0.5, 0.5);
+      const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
+      videoPlane.position.set(x, y, 0.05);
+      videoPlane.scale.set(scale, scale, scale);
+      videoPlane.visible = false;
+      videoPlane.renderOrder = 2;
+      parentGroup.add(videoPlane);
+      return videoPlane;
+    }
 
-    // Create Hotspot Planes (Initially Hidden)
+    const headVideoPlane = createVideoPlane(headTexture, 0.2, 0.85);
+    const handVideoPlane = createVideoPlane(handTexture, -0.6, 0.55);
+    const footVideoPlane = createVideoPlane(footTexture, 0.2, -0.95);
+
+    // Create Hotspot Planes (Click Detection Only)
     function createHotspotPlane(x, y, scale = 2) {
       const hotspotGeometry = new THREE.PlaneGeometry(0.3, 0.2);
-      const hotspotMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+      const hotspotMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
       const hotspotPlane = new THREE.Mesh(hotspotGeometry, hotspotMaterial);
-      hotspotPlane.position.set(x, y, 0.1);
+      hotspotPlane.position.set(x, y, 0.06);
       hotspotPlane.scale.set(scale, scale, scale);
-      hotspotPlane.visible = true; // Planes are visible for testing
+      hotspotPlane.visible = true;
+      hotspotPlane.renderOrder = 3;
+      parentGroup.add(hotspotPlane);
       return hotspotPlane;
     }
     
@@ -64,37 +83,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const handHotspotPlane = createHotspotPlane(-0.6, 0.55);
     const footHotspotPlane = createHotspotPlane(0.2, -0.95);
 
-   
-
-    // Create Video Planes (Initially Hidden)
-    function createVideoPlane(videoTexture, x, y, scale = 2) {
-      const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
-      const videoGeometry = new THREE.PlaneGeometry(1, 2160/3840);
-      const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
-      videoPlane.position.set(x, y, 0.05);
-      videoPlane.scale.set(scale, scale, scale);
-      videoPlane.visible = false; // Initially hidden
-      return videoPlane;
-    }
-
-    const headVideoPlane = createVideoPlane(headTexture, 0.82, 0.62 ); // Video appears to the right of the hotspot
-    const handVideoPlane = createVideoPlane(handTexture, -0.5, 0.2); // Video appears to the left of the hotspot
-    const footVideoPlane = createVideoPlane(footTexture,1.2, -0.5); // Video appears to the right of the hotspot
-
     // Assign video references for interaction
     headHotspotPlane.userData = { video: headVideo, plane: headVideoPlane };
     handHotspotPlane.userData = { video: handVideo, plane: handVideoPlane };
     footHotspotPlane.userData = { video: footVideo, plane: footVideoPlane };
 
     // Create Anchor and Attach Everything
-    const anchor = mindarThree.addAnchor(0); 
-    anchor.group.add(personPlane);
-    anchor.group.add(headHotspotPlane);
-    anchor.group.add(handHotspotPlane);
-    anchor.group.add(footHotspotPlane);
-    anchor.group.add(headVideoPlane);
-    anchor.group.add(handVideoPlane);
-    anchor.group.add(footVideoPlane);
+    const anchor = mindarThree.addAnchor(0);
+    anchor.group.add(parentGroup);
 
     // Handle Click Events for Hotspots
     document.body.addEventListener("click", (e) => {
@@ -114,10 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (video && plane) {
           if (video.paused) {
             video.play();
-            plane.visible = true; // Show video when playing
+            plane.visible = true;
           } else {
             video.pause();
-            plane.visible = true; // Hide video when paused
+            plane.visible = false;
           }
         }
       }
