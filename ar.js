@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load Videos
     const headVideo = await loadVideo("assets/videos/Head.mp4");
     const handVideo = await loadVideo("assets/videos/hand.mp4");
-    const footVideo = await loadVideo("assets/videos/foot.mp4");
+    const footVideo = await loadVideo("assets/videos/A_foot.mp4");
 
     headVideo.muted = false;
     handVideo.muted = false;
