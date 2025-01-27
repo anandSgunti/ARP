@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     parentGroup.add(personPlane);
 
     // Create Video Planes (Keeping Videos at Given Places)
-    function createVideoPlane(videoTexture, x, y, scale = 1) {
+    function createVideoPlane(videoTexture, x, y, scale = 2) {
       const videoMaterial = createChromaMaterial(videoTexture, 0x00ff00);
       const videoGeometry = new THREE.PlaneGeometry(0.5, 0.5);
       const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
@@ -62,9 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return videoPlane;
     }
 
-    const headVideoPlane = createVideoPlane(headTexture, 0.2, 0.85);
-    const handVideoPlane = createVideoPlane(handTexture, -0.6, 0.55);
-    const footVideoPlane = createVideoPlane(footTexture, 0.2, -0.95);
+    const headVideoPlane = createVideoPlane(headTexture, 0.82, 0.62 ); // Video appears to the right of the hotspot
+    const handVideoPlane = createVideoPlane(handTexture, -0.5, 0.2); // Video appears to the left of the hotspot
+    const footVideoPlane = createVideoPlane(footTexture,1.2, -0.5);
 
     // Create Hotspot Planes (Click Detection Only)
     function createHotspotPlane(x, y, scale = 2) {
