@@ -125,5 +125,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  start();
+  const startButton = document.getElementById('start-button');
+  if (startButton) {
+    startButton.addEventListener("click", () => {
+      // First hide the loading screen
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        loadingScreen.classList.add('hide');
+        // Wait for fade out animation, then remove loading screen and start AR
+        setTimeout(() => {
+          loadingScreen.remove();
+          // Start AR experience after screen is removed
+          start();
+        }, 800); // matches the CSS transition time
+      }
+    });
+  }
 });
